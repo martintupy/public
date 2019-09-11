@@ -1,1 +1,1 @@
-# showcase
+# Showcase of scala code
