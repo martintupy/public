@@ -14,6 +14,10 @@
       line-height: 2em;
     }
 
+    a {
+      color: hotpink;
+    }
+
     h1,
     h2,
     h3 {
@@ -60,16 +64,19 @@
 <body>
   <textarea id="source">
 
-class: middle, default
+class:  default
+.left-column[
+# First things first 
+]
 .right-column[
-
+- available links - justpaste.it/
+- presentation available at [github.com/martintupy/showcase/optics/optics.html](https://github.com/martintupy/showcase/optics/optics.html)
 1. download and install `sbt` [scala-sbt.org](https://www.scala-sbt.org/)
   - `brew install sbt`
 2. clone [github.com/martintupy/tryhard](https://github.com/martintupy/tryhard)
   - `git clone https://github.com/martintupy/tryhard`
 3. open in IntellIJ (or other IDE)
-  - sbt plugin need to be installed
-  - File -> Open -> tryhard/build.sbt -> Open as project -> OK
+  - File > Open > tryhard/build.sbt > Open as project > OK
 ]
 ---
 class: center, middle, default
@@ -183,6 +190,8 @@ val addressStreet = new Lens[Address, Street] {
 
 val street = Street(23, "High")
 val address = Address("London", street)
+
+// (address ??? street).modify(_ + " Street") 
 ```
 ]
 
@@ -275,7 +284,7 @@ class: default
 # Monocle
 ]
 .right-column[
-- [http://julien-truffaut.github.io/Monocle/optics/lens.html](http://julien-truffaut.github.io/Monocle/optics/lens.html)
+- [julien-truffaut.github.io/Monocle/optics/lens.html](http://julien-truffaut.github.io/Monocle/optics/lens.html)
 
 - sbt
 
@@ -522,12 +531,20 @@ class: default
 ### - laws
 ]
 
-.right-column.center[
+.right-column[
 
 ```scala
 def roundTripOneWay[S, A](i: Iso[S, A], s: S): Boolean = i.reverseGet(i.get(s)) == s  
 def roundTripOtherWay[S, A](i: Iso[S, A], a: A): Boolean = i.get(i.reverseGet(a)) == a
 ```
+]
+---
+class: default, center
+# To be continued 
+
+.left[
+### 1. Prism, Optional
+### 2. All combined, more useful functions using optics
 ]
 ---
 class: default, center, middle
@@ -539,9 +556,9 @@ class: default
 ]
 .right-column[
   - optics.Iso
-  - `def composeIso[B](other: Iso[A, B]): Iso[S, B]` (1) 
-  - `def asLens: Lens[S, A] = new Lens[S, A]` (1)
-  - `def composeLens[B](lens: Lens[A, B]): Lens[S, B]` (2)
+    - `def composeIso[B](other: Iso[A, B]): Iso[S, B]` (1) 
+    - `def asLens: Lens[S, A] = new Lens[S, A]` (1)
+    - `def composeLens[B](lens: Lens[A, B]): Lens[S, B]` (2)
 
 - optics.Lens
   - `def composeIso[B](iso: Iso[A, B]): Lens[S, B]` (2)
