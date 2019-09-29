@@ -1,49 +1,44 @@
 body {
-    font-family: 'IBM Plex', sans-serif;
-    line-height: 2em;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Maven Pro', sans-serif;
 }
 
 a {
     color: hotpink;
 }
 
-h1,
-h2,
-h3 {
-    font-family: 'IBM Plex', sans-serif;
-    font-weight: bold;
-    line-height: 1.3em;
-    color: #dd6892;
+#index {
+    box-sizing: border-box;
 }
 
-.remark-code,
-.remark-inline-code {
-    font-family: 'Ubuntu Mono', monospace;
-    background-color: #000;
-    padding: 3px 4px;
-    border-radius: 3px;
+.app {
+    height: 100%;
+    width: 100%;
+    padding: 2em;
+    color: #FFF7EF;
+    background-color: #314459; /*Color.PickledBluewood*/
 }
 
-.default {
-    background-color: #2C2C3B;
-    color: #eae9e9
+.sheet {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    border: 1px solid black;
+    border-radius: 1em 1em 0em 0em;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    grid-template-rows: auto 1fr;
 }
 
-/* Two-column layout */
-.left-column {
-    color: #dd6892;
-    width: 25%;
-    height: 92%;
-    float: left;
+.sheet-header {
+    border-radius: 1em 1em 0em 0em;
+    display: grid;
+    align-self: start;
+    grid-row: 1;
+    background-color: #323232 /*Mine Shaft*/
 }
 
-.left-column h2:last-of-type,
-.left-column h3:last-child {
-    color: #ffd5d5;
-}
-
-.right-column {
-    width: 75%;
-    float: right;
-    padding-top: 1em;
+.sheet-body {
+    grid-row: 2;
+    background-color: #514649 /*Emperor*/;
 }
