@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <title>Optics</title>
@@ -8,77 +8,25 @@
     @import url(https://fonts.googleapis.com/css?family=IBM+Plex);
     @import url(https://fonts.googleapis.com/css?family=Ropa+Sans:400,700,400italic);
     @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-    body {
-      font-family: 'IBM Plex', sans-serif;
-      line-height: 2em;
-    }
-
-    a {
-      color: hotpink;
-    }
-
-    h1,
-    h2,
-    h3 {
-      font-family: 'IBM Plex', sans-serif;
-      font-weight: bold;
-      line-height: 1.3em;
-      color: #dd6892;
-    }
-
-    .remark-code,
-    .remark-inline-code {
-      font-family: 'Ubuntu Mono';
-      background-color: #000;
-      padding: 3px 4px;
-      border-radius: 3px;
-    }
-
-    .default {
-      background-color: #2C2C3B;
-      color: #eae9e9
-    }
-
-    /* Two-column layout */
-    .left-column {
-      color: #dd6892;
-      width: 25%;
-      height: 92%;
-      float: left;
-    }
-
-    .left-column h2:last-of-type,
-    .left-column h3:last-child {
-      color: #ffd5d5;
-    }
-
-    .right-column {
-      width: 75%;
-      float: right;
-      padding-top: 1em;
-    }
+    @import "../style.css";
   </style>
 </head>
 
 <body>
-  <textarea id="source">
-  </textarea>
-  <script src="https://remarkjs.com/downloads/remark-latest.min.js">
-  </script>
-  <script>
-    var slideshow = remark.create({
-      highlightLanguage: 'scala',
-      highlightStyle: 'tomorrow-night-bright',
-      ratio: '16:9',
-      navigation: {
-        scroll: false,
-        touch: true,
-        click: true,
-      },
-      sourceUrl: "http://0.0.0.0:8000/optics.md"
-    });
-  </script>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>
+  var slideshow = remark.create({
+    highlightLanguage: 'scala',
+    highlightStyle: 'tomorrow-night-bright',
+    ratio: '16:9',
+    navigation: {
+      scroll: false,
+      touch: true,
+      click: true,
+    },
+    sourceUrl: "./optics.md"
+  });
+</script>
 </body>
 
 </html>
