@@ -1,9 +1,8 @@
-package optics
+package optics.iso
 
-import monocle.{Iso, PIso}
-import monocle.syntax.all._
+import monocle.Iso
 
-object IsoX extends App {
+object IsoExample extends App {
 
   // Server
   case class ServerStreet(number: Int, name: String)

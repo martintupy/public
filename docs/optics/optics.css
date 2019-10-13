@@ -35,6 +35,7 @@ h3 {
     width: 25%;
     height: 92%;
     float: left;
+    padding-right: 1em;
 }
 
 .left-column h2:last-of-type,
@@ -46,4 +47,11 @@ h3 {
     width: 75%;
     float: right;
     padding-top: 1em;
+}
+
+.mid {
+    right: 50%;
+    bottom: 50%;
+    transform: translate(50%,50%);
+    position: absolute;
 }

@@ -1,4 +1,4 @@
-package optics
+package optics.lens
 
 import monocle.macros.GenLens
 import monocle.macros.syntax.lens._

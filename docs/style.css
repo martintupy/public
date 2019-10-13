@@ -8,6 +8,7 @@ a {
     color: hotpink;
 }
 
+
 #index {
     box-sizing: border-box;
 }
@@ -32,6 +33,8 @@ a {
 
 .sheet-header {
     border-radius: 1em 1em 0em 0em;
+    font-size: 20px;
+    padding-left: 20px;
     display: grid;
     align-self: start;
     grid-row: 1;
@@ -42,3 +45,4 @@ a {
     grid-row: 2;
     background-color: #514649 /*Emperor*/;
 }
+
