@@ -1,5 +1,11 @@
 class:  default
-.left-column[]
+.left-column[
+ # Optics
+ #### [Lens](#2)
+ #### [Iso](#17)
+ #### [Prism](#28)
+ #### [Optional](#44)
+]
 - presentation available at [martintupy.github.io/showcase](https://martintupy.github.io/showcase/)
 - sources available at [github.com/martintupy/showcase](https://github.com/martintupy/showcase)
 - exercises at [github.com/martintupy/tryhard](https://github.com/martintupy/tryhard)
@@ -1443,9 +1449,9 @@ class: default
 ]
 - .accent[optics.Iso, optics.Lens, optics.Prism, optics.Optional] - complete all missing implementations
 
-- .accent[optics.exercise.Arithmetic] - modify octal number with flip method (1)
+- .accent[optics.exercise.Arithmetic] - implement `flipOctal` (modify octal number with flip method) (1)
 
-- .accent[optics.exercise.Arithmetic] - get current year from `age` and `bornYear` (2)
+- .accent[optics.exercise.Arithmetic] - implement `subtractFromRoman`, (subtract number from roman represented as a string) (2)
 
 - .accent[optics.exercise.JsonDig] - implement method that will get names from json that are younger than age threshold (3)
 
