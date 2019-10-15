@@ -49,6 +49,10 @@ h3 {
     padding-top: 1em;
 }
 
+.accent {
+    color: greenyellow;
+}
+
 .mid {
     right: 50%;
     bottom: 50%;

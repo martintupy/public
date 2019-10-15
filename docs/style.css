@@ -44,5 +44,16 @@ a {
 .sheet-body {
     grid-row: 2;
     background-color: #514649 /*Emperor*/;
+    padding: 10px;
 }
+
+li:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.box {
+    background-color: #0C3046;
+    border-radius: 2px;
+}
+
 

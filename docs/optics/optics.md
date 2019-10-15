@@ -1,9 +1,10 @@
 class:  default
-.left-column[
-# First things first 
-]
+.left-column[]
 - presentation available at [martintupy.github.io/showcase](https://martintupy.github.io/showcase/)
 - sources available at [github.com/martintupy/showcase](https://github.com/martintupy/showcase)
+- exercises at [github.com/martintupy/tryhard](https://github.com/martintupy/tryhard)
+- monocle at [julien-truffaut.github.io/Monocle/](https://julien-truffaut.github.io/Monocle/)
+
 1. download and install `sbt` [scala-sbt.org](https://www.scala-sbt.org/)
   - `brew install sbt`
 2. clone [github.com/martintupy/tryhard](https://github.com/martintupy/tryhard)
@@ -13,7 +14,7 @@ class:  default
 <!-------------------------------------------------------------------------->
 ---
 class: center, middle, default
-# Lens
+# Lens 🔎
 
 <!-------------------------------------------------------------------------->
 ---
@@ -322,7 +323,7 @@ Optics are a group of purely functional abstractions to manipulate `get`, `set` 
 ---
 
 class: center, middle, default
-# Iso
+# Iso 🤝
 <!-------------------------------------------------------------------------->
 ---
 class: default
@@ -501,7 +502,7 @@ def roundTripOtherWay[S, A] (i: Iso[S, A], a: A): Boolean =
 <!-------------------------------------------------------------------------->
 ---
 class: default, center, middle
-# Tryhard time
+# Tryhard time 😭
 <!-------------------------------------------------------------------------->
 ---
 class: default
@@ -527,7 +528,7 @@ class: default
 <!-------------------------------------------------------------------------->
 ---
 class: default, center, middle
-# Prism
+# Prism 🧐
 <!-------------------------------------------------------------------------->
 ---
 class: default
@@ -963,7 +964,7 @@ def partialRoundTripOneWay[S, A](p: Prism[S, A], a: A): Boolean =
 <!-------------------------------------------------------------------------->
 ---
 class: middle center default
-# Optional
+# ❓ Optional
 <!-------------------------------------------------------------------------->
 ---
 class: default
@@ -1333,7 +1334,7 @@ class: default
 def nthOptional[A](n: Int) = 
   Optional[Iterable[A], A](_.drop(n).headOption) { a => list =>
     val (l, r) = list.splitAt(n)
-    l ++ List(a) ++ r.drop(1)
+    l ++ Iterable(a) ++ r.drop(1)
   }
 
 nthOptional[Char](4).modify(_.toUpper)("jumpshot".toCharArray).mkString
@@ -1414,7 +1415,7 @@ trait Prism[S, A] {
 
 trait Optional[S, A] {
   def getOption: S => Option[A]
-  def reverseGet: A => S => S
+  def set: A => S => S
 }
 ```
 
@@ -1427,4 +1428,31 @@ class: default
  ### - methods
  ### - diagram
 ]
+
+#### Use always least necessary abstraction !
 ![](./optics-diagram.png)
+<!-------------------------------------------------------------------------->
+---
+class: default, center, middle
+# Tryhard time 😭
+<!-------------------------------------------------------------------------->
+---
+class: default
+.left-column[
+  # Tryhard time
+]
+- .accent[optics.Iso, optics.Lens, optics.Prism, optics.Optional] - complete all missing implementations
+
+- .accent[optics.exercise.Arithmetic] - modify octal number with flip method (1)
+
+- .accent[optics.exercise.Arithmetic] - get current year from `age` and `bornYear` (2)
+
+- .accent[optics.exercise.JsonDig] - implement method that will get names from json that are younger than age threshold (3)
+
+-
+
+1. - Prism, have a look at `util.alg.mod.Mod`
+ 
+2. - bornYear is Roman Number, have a look at `util.alg.RomanNumber`, use `Prism` `Iso` composition, maybe use other methods than modify
+ 
+3. - hard, find a whatever solution 😂, have a look at `util.json`   

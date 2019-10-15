@@ -25,7 +25,7 @@ object OptionalMonocle extends App {
 
   def nthOptional[A](n: Int) = Optional[Iterable[A], A](_.drop(n).headOption) { a =>list =>
     val (l, r) = list.splitAt(n)
-    l ++ List(a) ++ r.drop(1)
+    l ++ Iterable(a) ++ r.drop(1)
   }
 
   println(nthOptional[Char](4).modify(_.toUpper)("jumpshot".toCharArray).mkString)
