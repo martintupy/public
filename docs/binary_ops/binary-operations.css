@@ -53,6 +53,14 @@ h3 {
     color: greenyellow;
 }
 
+.mono {
+    color: yellow;
+    font-family: 'Ubuntu Mono', monospace;
+}
+.yellow {
+    color: yellow;
+}
+
 .mid {
     right: 50%;
     bottom: 50%;
