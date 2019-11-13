@@ -6,6 +6,8 @@ trait Group[A] extends Monoid[A] {
 
   def inverse(a: A): A
 
+  def remove(x: A, y: A): A = combine(x, inverse(y))
+
 }
 
 object Group {

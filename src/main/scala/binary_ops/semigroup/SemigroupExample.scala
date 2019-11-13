@@ -39,7 +39,7 @@ object SemigroupExample {
   implicit def mapMergeSemigroup[K, V](implicit semigroup: Semigroup[V]): Semigroup[Map[K, V]] = new Semigroup[Map[K, V]] {
     def combine(x: Map[K, V], y: Map[K, V]): Map[K, V] = {
       x.foldLeft(y) { case (xAcc, (yKey, yValue)) =>
-        val value = semigroup.optionCombine(yValue, xAcc.get(yKey))
+        val value = Semigroup.maybeCombine(yValue, xAcc.get(yKey))
         xAcc.updated(yKey, value)
       }
     }

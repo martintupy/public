@@ -67,3 +67,28 @@ h3 {
     transform: translate(50%,50%);
     position: absolute;
 }
+
+.footer {
+    color: #85858D;
+    position: fixed;
+    top: 95%;
+    left: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.remark-slide-number {
+    display: none;
+}
+
+th {
+    color: #dd6892;
+    text-align: left;
+}
+td {
+    width: 8em;
+}
+
+.red {
+    color: red;
+}

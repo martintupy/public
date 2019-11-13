@@ -10,3 +10,7 @@ trait Monoid[A] extends Semigroup[A] {
 
   def isEmpty(a: A): Boolean = a == empty
 }
+
+object Monoid {
+  def apply[A](implicit monoid: Monoid[A]) = monoid
+}

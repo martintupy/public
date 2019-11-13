@@ -385,7 +385,7 @@ class: default
 ]
 - `List` <=> `Vector`
 
-- `Map[K, V]` <=> `List[(K, V)]`
+- `Map[K, V]` <=> `Set[(K, V)]`
 
 - `String` <=> `List[Char]`
 

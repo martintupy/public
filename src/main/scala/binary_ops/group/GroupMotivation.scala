@@ -11,7 +11,14 @@ object GroupMotivation {
     6 -> 401
   )
 
-  val
+  "1991-08-06" -> Map(
+    "domain1.com" -> 1
+  )
+
+  "1991-08-07" -> Map(
+    "domain1.com" -> 10
+  )
+
 
 
 
