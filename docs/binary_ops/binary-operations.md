@@ -2692,6 +2692,45 @@ Binary operation
  - .accent[identity element] `Ø, x • Ø == x == Ø • x`
  - .accent[inverse] `x • x' == Ø`
 
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+]
+
+Binary operation
+ - .accent[closed] `x ∊ A, y ∊ A => x • y ∊ A` 
+ - .accent[associative] `((x • y) • z) == (x • (y • z))`
+ - .accent[identity element] `Ø, x • Ø == x == Ø • x`
+ - .accent[inverse] `x • x' == Ø`
+
+
+```scala
+trait Group[A] extends Monoid[A] {
+  def inverse(a: A): A
+}
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+]
+
+Binary operation
+ - .accent[closed] `x ∊ A, y ∊ A => x • y ∊ A` 
+ - .accent[associative] `((x • y) • z) == (x • (y • z))`
+ - .accent[identity element] `Ø, x • Ø == x == Ø • x`
+ - .accent[inverse] `x • x' == Ø`
+
 
 ```scala
 trait Group[A] extends Monoid[A] {
@@ -2816,6 +2855,50 @@ implicit val intGroup = new Group[Int] {
   def combine(x: Int, y: Int): Int = x + y
 }
 
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+```scala
+implicit val intGroup = new Group[Int] {
+  def inverse(a: Int): Int = -a
+  def empty: Int = 0
+  def combine(x: Int, y: Int): Int = x + y
+}
+
+implicit val longGroup = new Group[Long] {
+  def inverse(a: Long): Long = -a
+  def empty: Long = 0L
+  def combine(x: Long, y: Long): Long = x + y
+}
+
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+```scala
+implicit val intGroup = new Group[Int] {
+  def inverse(a: Int): Int = -a
+  def empty: Int = 0
+  def combine(x: Int, y: Int): Int = x + y
+}
+
 implicit val longGroup = new Group[Long] {
   def inverse(a: Long): Long = -a
   def empty: Long = 0L
@@ -2827,6 +2910,25 @@ implicit val doubleGroup = new Group[Double] {
   def empty: Double = 0.0
   def combine(x: Double, y: Double): Double = x + y
 }
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+```scala
+implicit def numericGroup[A: Numeric] = new Group[A] {
+  def inverse(a: A): A = Numeric[A].negate(a)
+  def empty: A = Numeric[A].zero
+  def combine(x: A, y: A): A = Numeric[A].plus(x, y)
+}
+
 ```
 
 <!-------------------------------------------------------------------------->
@@ -3132,6 +3234,77 @@ val maps1: Map[Int, Map[String, Int]] = Map(
   2 -> Map("Adam" -> 2,  "Monika" -> 1,             "Maria" -> 5),
   3 -> Map(              "Monika" -> 3                          )
 )
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+
+```scala
+val maps1: Map[Int, Map[String, Int]] = Map(
+  1 -> Map("Adam" -> 10, "Monika" -> 3, "Anna" -> 6             ),
+  2 -> Map("Adam" -> 2,  "Monika" -> 1,             "Maria" -> 5),
+  3 -> Map(              "Monika" -> 3                          )
+)
+
+val maps2: Map[Int, Map[String, Int]] = Map(
+  1 -> Map("Adam" -> 10,                "Anna" -> 3             ),
+  2 -> Map("Adam" -> 3                                          ),
+  3 -> Map("Adam" -> 4,  "Monika" -> 1,             "Maria" -> 3)
+)
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+
+```scala
+val maps1: Map[Int, Map[String, Int]] = Map(
+  1 -> Map("Adam" -> 10, "Monika" -> 3, "Anna" -> 6             ),
+  2 -> Map("Adam" -> 2,  "Monika" -> 1,             "Maria" -> 5),
+  3 -> Map(              "Monika" -> 3                          )
+)
+
+val maps2: Map[Int, Map[String, Int]] = Map(
+  1 -> Map("Adam" -> 10,                "Anna" -> 3             ),
+  2 -> Map("Adam" -> 3                                          ),
+  3 -> Map("Adam" -> 4,  "Monika" -> 1,             "Maria" -> 3)
+)
+
+Group[Map[Int, Map[String, Int]]].remove(maps1, maps2)
+
+```
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+]
+
+```scala
+val maps1: Map[Int, Map[String, Int]] = Map(
+  1 -> Map("Adam" -> 10, "Monika" -> 3, "Anna" -> 6             ),
+  2 -> Map("Adam" -> 2,  "Monika" -> 1,             "Maria" -> 5),
+  3 -> Map(              "Monika" -> 3                          )
+)
 
 val maps2: Map[Int, Map[String, Int]] = Map(
   1 -> Map("Adam" -> 10,                "Anna" -> 3             ),
@@ -3175,6 +3348,314 @@ implicit def optionGroup[A: Group] = new Group[Option[A]] {
   def combine(x: Option[A], y: Option[A]): Option[A] =
     optionMonoid[A].combine(x, y).filterNot(Group[A].isEmpty)
 }
+```
+
+
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+```
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+```
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+import cats.syntax.option._ // syntax for option - helps compiler infer type
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+import cats.syntax.option._ // syntax for option - helps compiler infer type
+none[Int] remove 5.some // Some(-5)
+
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+import cats.syntax.option._ // syntax for option - helps compiler infer type
+none[Int] remove 5.some // Some(-5)
+
+5.some remove 5.some // None
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+import cats.syntax.option._ // syntax for option - helps compiler infer type
+none[Int] remove 5.some // Some(-5)
+
+5.some remove 5.some // None
+5.some remove none // Some(5)
+```
+
+<!-------------------------------------------------------------------------->
+---
+class: default
+
+.left-column[
+# Group
+### - motivation
+### - core
+### - examples
+### - cats
+]
+
+```scala
+
+import cats.instances.int._ // int instance for Group
+
+optionGroup.remove(Option(5), Option(1)) // Some(4)
+Group[Option[Int]].remove(Option(5), Option(1)) // Some(4)
+
+import cats.syntax.group._ // syntax for group functions
+
+Option(5) remove Option(1) // Some(4)
+Option(5) |-| Option(1) // Some(4)
+Option(5).inverse // Some(-5)
+
+Option.empty[Int] remove Some(5) // Some(-5)
+  
+import cats.syntax.option._ // syntax for option - helps compiler infer type
+none[Int] remove 5.some // Some(-5)
+
+5.some remove 5.some // None
+5.some remove none // Some(5)
+none[Int] remove 5.some // Some(-5)
 ```
 
 <!-------------------------------------------------------------------------->
