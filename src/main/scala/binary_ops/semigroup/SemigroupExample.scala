@@ -21,8 +21,8 @@ object SemigroupExample {
     def combine(x: String, y: String): String = x ++ y
   }
 
-  implicit def setIntersectionSemigroup[A] = new Semigroup[Set[A]] {
-    def combine(x: Set[A], y: Set[A]): Set[A] = x intersect y
+  implicit def setUnionSemigroup[A] = new Semigroup[Set[A]] {
+    def combine(x: Set[A], y: Set[A]): Set[A] = x union y
   }
 
 
