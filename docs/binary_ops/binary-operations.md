@@ -3745,6 +3745,25 @@ class: default
 
 <!-------------------------------------------------------------------------->
 ---
+class: default
+
+.left-column[
+# Examples for musing
+]
+
+<br>
+1. Set intersection Monoid <br>
+<br>
+2. Boolean Semigroup/Monoid/Group <br>
+    (combine: and, or) <br>
+   
+3. 
+Is every Group - Monoid, Semigroup? <br>
+Is every Monoid - Semigroup? <br>
+Is every Semigroup - Monoid, Group? <br>
+
+<!-------------------------------------------------------------------------->
+---
 class: center, middle, default
 # That's it
 #### If u will have any questions, issues with cats
