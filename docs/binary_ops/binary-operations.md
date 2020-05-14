@@ -3021,8 +3021,8 @@ class: default
 
 .mono[Map[K, V] <=> Set[(K, V)]]
 
-https://martintupy.github.io/showcase/optics/optics.html#17
-https://martintupy.github.io/showcase/optics/optics.html#20
+https://martintupy.github.io/showcase/slides.optics/slides.optics.html#17
+https://martintupy.github.io/showcase/slides.optics/slides.optics.html#20
 
 ```scala
 def mapSetIso[K, V] = Iso[Map[K, V], Set[(K, V)]](_.toSet)(_.toMap)

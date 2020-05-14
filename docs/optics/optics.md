@@ -33,7 +33,7 @@ class: default
 ]
 
 A Lens is an optic (purely functional abstraction over `get` and `set`)
-mostly for Product types, e.g. `case class`, `Tuple` , `HList` ...
+mostly for Product slides.types, e.g. `case class`, `Tuple` , `HList` ...
 
 `Lens[S, A]` where: 
  - `S` represents the Product
@@ -57,7 +57,7 @@ class: default
 ### - core
 ]
 A Lens is an optic (purely functional abstraction over `get` and `set`)
-mostly for Product types, e.g. `case class`, `Tuple` , `HList` ...
+mostly for Product slides.types, e.g. `case class`, `Tuple` , `HList` ...
 
 `Lens[S, A]` where: 
  - `S` represents the Product
@@ -153,7 +153,7 @@ trait Lens[S, A] { self =>
   }  
 }
 ```
-- types in compose need to match `S => A`, `A => B`  ->  `S => B`
+- slides.types in compose need to match `S => A`, `A => B`  ->  `S => B`
 <!-------------------------------------------------------------------------->
 ---
 class: default
@@ -293,7 +293,7 @@ class: default
 .left-column[
 # Monocle
 ]
-- [julien-truffaut.github.io/Monocle/optics/lens.html](http://julien-truffaut.github.io/Monocle/optics/lens.html)
+- [julien-truffaut.github.io/Monocle/slides.optics/lens.html](http://julien-truffaut.github.io/Monocle/optics/lens.html)
 
 - sbt
 
@@ -319,8 +319,8 @@ class: default
 
 ]
 Optics are a group of purely functional abstractions to manipulate `get`, `set` of immutable objects.
-- `Iso` - Isomorphic types
-- `Prism` - Coproduct (Sum) types 
+- `Iso` - Isomorphic slides.types
+- `Prism` - Coproduct (Sum) slides.types 
 - `Lens` - Product Types
 - `Optional` - Generalized for (Lens + Prism)
 
@@ -338,7 +338,7 @@ class: default
 ### - core
 ]
 
-- isomorphic types (in sense what data they represent)
+- isomorphic slides.types (in sense what data they represent)
 - `Iso[S, A]`
 - `S` contains same data as `A`
 
@@ -358,7 +358,7 @@ class: default
 # Iso
 ### - core
 ]
-- isomorphic types (in sense what data they represent)
+- isomorphic slides.types (in sense what data they represent)
 - `Iso[S, A]`
 - `S` contains same data as `A`
 
@@ -515,15 +515,15 @@ class: default
 .left-column[
   # Tryhard time
 ]
-  - optics.Iso
+  - slides.optics.Iso
     - `def composeIso[B] (other: Iso[A, B]): Iso[S, B]` (1) 
     - `def asLens: Lens[S, A] = new Lens[S, A]` (1)
     - `def composeLens[B] (lens: Lens[A, B]): Lens[S, B]` (2)
 
-- optics.Lens
+- slides.optics.Lens
   - `def composeIso[B] (iso: Iso[A, B]): Lens[S, B]` (2)
 
-- optics.WareHouse
+- slides.optics.WareHouse
   - `val normalizedStorage: WareHouse` (3)
 - Lens, Iso - build
 - WareHouse - run main
@@ -588,7 +588,7 @@ class: default
   ### - motivation
   ### - core
 ]
-- usually for Coproduct (Sum) types
+- usually for Coproduct (Sum) slides.types
 - `Prism[S, A]`
 - `S` can be a `A` - getOption
 - `A` is a `S` - reverseGet
@@ -609,7 +609,7 @@ class: default
   ### - motivation
   ### - core
 ]
-- usually for Coproduct (Sum) types
+- usually for Coproduct (Sum) slides.types
 - `Prism[S, A]`
 - `S` can be a `A` - getOption
 - `A` is a `S` - reverseGet
@@ -649,8 +649,8 @@ class: default
 - `Long` to `Int`
 
 ???
-- Sum types
-- Not only Sum types 
+- Sum slides.types
+- Not only Sum slides.types 
 - maybe get Int out of Double or Long
 - Int is Double or Long
 <!-------------------------------------------------------------------------->
@@ -1387,9 +1387,9 @@ class: default
 
 Optics are a group of purely functional abstractions to manipulate `get`, `set` of immutable objects.
 
-- `Iso` - Isomorphic types
+- `Iso` - Isomorphic slides.types
 
-- `Prism` - Coproduct (Sum) types 
+- `Prism` - Coproduct (Sum) slides.types 
 
 - `Lens` - Product Types
 
@@ -1447,13 +1447,13 @@ class: default
 .left-column[
   # Tryhard time
 ]
-- .accent[optics.Iso, optics.Lens, optics.Prism, optics.Optional] - complete all missing implementations
+- .accent[slides.optics.Iso, slides.optics.Lens, slides.optics.Prism, slides.optics.Optional] - complete all missing implementations
 
-- .accent[optics.exercise.Arithmetic] - implement `flipOctal` (modify octal number with flip method) (1)
+- .accent[slides.optics.exercise.Arithmetic] - implement `flipOctal` (modify octal number with flip method) (1)
 
-- .accent[optics.exercise.Arithmetic] - implement `subtractFromRoman`, (subtract number from roman represented as a string) (2)
+- .accent[slides.optics.exercise.Arithmetic] - implement `subtractFromRoman`, (subtract number from roman represented as a string) (2)
 
-- .accent[optics.exercise.JsonDig] - implement method that will get names from json that are younger than age threshold (3)
+- .accent[slides.optics.exercise.JsonDig] - implement method that will get names from json that are younger than age threshold (3)
 
 -
 
