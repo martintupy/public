@@ -17,5 +17,5 @@ lazy val root = (project in file("."))
       cats,
       scalaCheck,
       fs2
-    ) ++ monocle
+    ) ++ monocle ++ circe
   )

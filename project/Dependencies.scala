@@ -11,4 +11,12 @@ object Dependencies {
     "com.github.julien-truffaut" %% "monocle-macro" % "2.0.0",
     "com.github.julien-truffaut" %% "monocle-law" % "2.0.0"
   )
+
+  lazy val circe = Seq(
+    "io.circe" %% "circe-core",
+    "io.circe" %% "circe-generic",
+    "io.circe" %% "circe-parser",
+    "io.circe" %% "circe-shapes",
+    "io.circe" %% "circe-generic-extras"
+  ).map(_ % "0.13.0")
 }
