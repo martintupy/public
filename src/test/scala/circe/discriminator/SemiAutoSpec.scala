@@ -9,17 +9,17 @@ import org.scalatest.flatspec.AnyFlatSpec
 class SemiAutoSpec extends AnyFlatSpec with Matchers {
 
   "circe auto derivation for union types" should "encode to json" in {
-    val innerA: Inner = InnerA(32, "a")
-    val innerB: Inner = InnerB("bbb", "b")
+    val innerA: Inner = InnerA(i = 32, name = "a")
+    val innerB: Inner = InnerB(s = "bbb", name = "b")
 
-    val outerA: Outer = OuterA(innerA)
+    val outerA: Outer = OuterA(inner = innerA)
 
-    val outerB2: Outer = OuterB(innerA, 10)
-    val outerB1: Outer = OuterB(innerA)
-    val outerB3: Outer = OuterB(innerB, 10)
+    val outerB2: Outer = OuterB(inner = innerA, num = 10)
+    val outerB1: Outer = OuterB(inner = innerA)
+    val outerB3: Outer = OuterB(inner = innerB, num = 10)
 
-    val outerC1: Outer = OuterC(innerA, "outerC1")
-    val outerC2: Outer = OuterC(innerB, "outerC2")
+    val outerC1: Outer = OuterC(inner = innerA, name = "outerC1")
+    val outerC2: Outer = OuterC(inner = innerB, name = "outerC2")
 
 
     innerA.asJson shouldEqual
