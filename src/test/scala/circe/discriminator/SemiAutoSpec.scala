@@ -9,20 +9,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 class SemiAutoSpec extends AnyFlatSpec with Matchers {
 
   "circe auto derivation for union types" should "encode to json" in {
-    val innerA: Inner = InnerA(i = 32, name = "a")
-    val innerB: Inner = InnerB(s = "bbb", name = "b")
-
-    val outerA: Outer = OuterA(inner = innerA)
-
-    val outerB2: Outer = OuterB(inner = innerA, num = 10)
-    val outerB1: Outer = OuterB(inner = innerA)
-    val outerB3: Outer = OuterB(inner = innerB, num = 10)
-
-    val outerC1: Outer = OuterC(inner = innerA, name = "outerC1")
-    val outerC2: Outer = OuterC(inner = innerB, name = "outerC2")
-
-
-    innerA.asJson shouldEqual
+    (InnerA(i = 32, name = "a"): Inner).asJson shouldEqual
       parse("""
         |{
         |  "i" : 32,
@@ -31,7 +18,19 @@ class SemiAutoSpec extends AnyFlatSpec with Matchers {
         |}
         |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
 
-    outerB1.asJson shouldEqual
+    (OuterA(inner = InnerA(i = 32, name = "a")): Outer).asJson shouldEqual
+      parse("""
+              |{
+              |  "inner" : {
+              |    "i" : 32,
+              |    "name" : "a",
+              |    "type" : "InnerA"
+              |  },
+              |  "type" : "OuterA"
+              |}
+              |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
+
+    (OuterB(inner = InnerA(i = 32, name = "a")): Outer).asJson shouldEqual
       parse("""
         |{
         |  "inner" : {
@@ -44,7 +43,7 @@ class SemiAutoSpec extends AnyFlatSpec with Matchers {
         |}
         |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
 
-    outerB2.asJson shouldEqual
+    (OuterB(inner = InnerA(i = 32, name = "a"), num = 10): Outer).asJson shouldEqual
       parse("""
         |{
         |  "inner" : {
@@ -57,7 +56,7 @@ class SemiAutoSpec extends AnyFlatSpec with Matchers {
         |}
         |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
 
-    outerB3.asJson shouldEqual
+    (OuterB(inner = InnerB(s = "bbb", name = "b"), num = 10): Outer).asJson shouldEqual
       parse("""
         |{
         |  "inner" : {
@@ -70,7 +69,7 @@ class SemiAutoSpec extends AnyFlatSpec with Matchers {
         |}
         |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
 
-    outerC1.asJson shouldEqual
+    (OuterC(inner = InnerA(i = 32, name = "a"), name = "outerC1"): Outer).asJson shouldEqual
       parse("""
         |{
         |  "inner" : {
@@ -83,7 +82,7 @@ class SemiAutoSpec extends AnyFlatSpec with Matchers {
         |}
         |""".stripMargin).getOrElse(throw new Exception("Wrong json"))
 
-    outerC2.asJson shouldEqual
+    (OuterC(inner = InnerB(s = "bbb", name = "b"), name = "outerC2"): Outer).asJson shouldEqual
       parse("""
         |{
         |  "inner" : {
