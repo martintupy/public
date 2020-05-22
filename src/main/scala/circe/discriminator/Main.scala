@@ -33,4 +33,8 @@ object Main extends App {
   println(outerC1.asJson)
   println(outerC2.asJson)
 
+  val gender: Gender.Value = Gender.Male
+  println(gender.toString)
+  println(gender.asJson)
+
 }
