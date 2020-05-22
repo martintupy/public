@@ -1,7 +1,8 @@
-package circe.discriminator
-import circe.discriminator.Inner._
-import circe.discriminator.Outer._
+package circe
+import circe.discriminator.Inner.{InnerA, InnerB}
+import circe.discriminator.Outer.{OuterA, OuterB, OuterC}
 import circe.discriminator.WithType.{WithTypeA, WithTypeB}
+import circe.discriminator.{Inner, Outer, WithType}
 import io.circe.syntax._
 
 object Main extends App {

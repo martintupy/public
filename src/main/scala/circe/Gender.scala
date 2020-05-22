@@ -1,4 +1,4 @@
-package circe.discriminator
+package circe
 import io.circe.{Decoder, Encoder}
 
 object Gender extends Enumeration {
@@ -8,4 +8,3 @@ object Gender extends Enumeration {
   implicit val encoder: Encoder[Value] = Encoder.enumEncoder(Gender)
   implicit val decoder: Decoder[Value] = Decoder.enumDecoder(Gender)
 }
-
