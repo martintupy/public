@@ -11,7 +11,7 @@ import scala.concurrent.{Await, Future}
 object Traverse extends App {
 
   def effect(n: Int): Future[Int] = {
-    Thread.sleep(1000 / n)
+    Thread.sleep(1000 / n) // bigger the number, longer it takes
     println(n)
     n.pure[Future]
   }
@@ -23,6 +23,16 @@ object Traverse extends App {
     program,
     Duration(1, TimeUnit.MINUTES)
   )
+  //  1
+  //  2
+  //  3
+  //  4
+  //  5
+  //  6
+  //  7
+  //  8
+  //  9
+  //  10
 
 
 }
