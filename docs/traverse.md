@@ -2,7 +2,7 @@
 
 convert `List[A]` to `F[List[B]]` using `A => F[B]`
 
-traverse works for any traversable type that implements `Traversable` type-class `cats.Traversable`
+traverse works for any traversable type that implements `Traverse` type-class `cats.Traverse`
 
 most common instances are `List` `Option` - these are included in cats library and are accessible after including
 ```scala
@@ -45,7 +45,7 @@ List("1", "two", "3").traverse(parseInt)
 
 ### Traverse isn't parallel
 
-traverse is not spawning new threads, every value in `Traversable` is processed sequentially 
+traverse is not spawning new threads, every value in `Traverse` is processed sequentially 
 
 ```scala
 import cats.implicits._
