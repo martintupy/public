@@ -16,18 +16,22 @@ object Traverse extends App {
 
   def program = (1 to 10).toList.traverse(effect)
 
-
   Await.result(program, 1.minute)
-  //  1
-  //  2
-  //  3
-  //  4
-  //  5
-  //  6
-  //  7
-  //  8
-  //  9
-  //  10
 
+  // ---------------
 
+  def compute(n: Int): Future[Int] = Future(n)
+
+  val list = (1 to 10).toList
+
+  list.traverse(n => compute(n))
+
+  // ---------------
+  def parseInt(s: String): Option[Int] = Either.catchOnly[NumberFormatException](s.toInt).toOption
+
+  List("1", "2", "3").traverse(parseInt)
+
+  List("1", "two", "3").traverse(parseInt)
+
+  val users: Map[Int, String] = Map(1 -> "Mike", 3 -> "Martin", 6 -> "John")
 }
