@@ -120,3 +120,116 @@ def getGroupUsers(id: Int): Future[List[String]] = Future(usersGroup.getOrElse(i
 List(1, 2, 3).flatTraverse(getGroupUsers)
 // res5: Future[List[String]] = Future(Success(List(Mike, Josh, Maria, Martin)))
 ```
+
+### All together
+
+Without `F[_]` context
+```scala
+val appToRole: Map[String, List[String]] = Map("fevo" -> List("Admin", "User", "Customer"), "other" -> List("User"))
+// appToRole: Map[String, List[String]] = Map(
+//   "fevo" -> List("Admin", "User", "Customer"),
+//   "other" -> List("User")
+// )
+val roleToUserId: Map[String, List[Int]] = Map("Admin" -> List(1, 3, 4), "User" -> List(1, 2, 3, 4, 5, 6), "Customer" -> List.empty)
+// roleToUserId: Map[String, List[Int]] = Map(
+//   "Admin" -> List(1, 3, 4),
+//   "User" -> List(1, 2, 3, 4, 5, 6),
+//   "Customer" -> List()
+// )
+val userIdToUser: Map[Int, String] = Map(1 -> "Martin", 2 -> "Leo", 3 -> "Peter", 4 -> "Maria", 5 -> "Josh", 6 -> "Dusan", 7 -> "John", 8 -> "Patrick")
+// userIdToUser: Map[Int, String] = HashMap(
+//   5 -> "Josh",
+//   1 -> "Martin",
+//   6 -> "Dusan",
+//   2 -> "Leo",
+//   7 -> "John",
+//   3 -> "Peter",
+//   8 -> "Patrick",
+//   4 -> "Maria"
+// )
+
+def getRoles(app: String): List[String] = appToRole.getOrElse(app, List.empty)
+def getUserIds(role: String): List[Int] = roleToUserId.getOrElse(role, List.empty)
+def getUserName(id: Int): Option[String] =  userIdToUser.get(id)
+
+for {
+  role <- getRoles("fevo")
+  id <- getUserIds(role)
+  user <- getUserName(id).toList
+} yield user
+// res6: List[String] = List(
+//   "Martin",
+//   "Peter",
+//   "Maria",
+//   "Martin",
+//   "Leo",
+//   "Peter",
+//   "Maria",
+//   "Josh",
+//   "Dusan"
+// )
+
+for {
+  role <- getRoles("other")
+  id <- getUserIds(role)
+  user <- getUserName(id).toList
+} yield user
+// res7: List[String] = List(
+//   "Martin",
+//   "Leo",
+//   "Peter",
+//   "Maria",
+//   "Josh",
+//   "Dusan"
+// )
+```
+
+With `F[_]` context - `Future` standard scala
+```scala
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration._
+
+def getRolesF(app: String): Future[List[String]] = Future(getRoles(app))
+def getUserIdsF(role: String): Future[List[Int]] = Future(getUserIds(role))
+def getUserNameF(id: Int): Future[Option[String]] =  Future(getUserName(id))
+
+
+val usersStd = for {
+  roles <- getRolesF("other")
+  ids <- Future.traverse(roles)(getUserIdsF).map(_.flatten)
+  user <- Future.traverse(ids)(id => getUserNameF(id)).map(_.flatten)
+} yield user
+// usersStd: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
+Await.result(usersStd, 1.minute)
+// res8: List[String] = List(
+//   "Martin",
+//   "Leo",
+//   "Peter",
+//   "Maria",
+//   "Josh",
+//   "Dusan"
+// )
+```
+
+With `F[_]` context - `Future` using cats
+```scala
+import cats.implicits._
+
+val usersCats = for {
+  roles <- getRolesF("other") 
+  userIds <- roles.flatTraverse(getUserIdsF)
+  user <- userIds.traverseFilter(getUserNameF)
+} yield user
+// usersCats: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
+
+Await.result(usersCats, 1.minute)
+// res9: List[String] = List(
+//   "Martin",
+//   "Leo",
+//   "Peter",
+//   "Maria",
+//   "Josh",
+//   "Dusan"
+// )
+```
