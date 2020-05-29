@@ -76,7 +76,7 @@ Await.result(program, 1.minute)
 
 ### Traverse filter
 
-filtering out values that are not present while traversing in `F[_]` context
+filtering out values that are not present as result while traversing in `F[_]` context
 
 ```scala
 import cats.implicits._
@@ -94,4 +94,27 @@ val userIds = (1 to 10).toList
 
 userIds.traverseFilter(getUser)
 // res4: Future[List[String]] = Future(Success(List(Mike, Martin, John)))
+```
+
+### Flat traverse
+
+flattening values (list of values) from result while traversing in `F[_]` context
+
+```scala
+import cats.implicits._
+
+import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+
+val usersGroup: Map[Int, List[String]] = Map(1 -> List("Mike", "Josh", "Maria"), 3 -> List("Martin"), 6 -> List("John", "Peter"))
+// usersGroup: Map[Int, List[String]] = Map(
+//   1 -> List("Mike", "Josh", "Maria"),
+//   3 -> List("Martin"),
+//   6 -> List("John", "Peter")
+// )
+
+def getGroupUsers(id: Int): Future[List[String]] = Future(usersGroup.getOrElse(id, List.empty))
+
+userIds.flatTraverse(getGroupUsers)
+// res5: Future[List[String]] = Future(Success(List(Mike, Josh, Maria, Martin, John, Peter)))
 ```
