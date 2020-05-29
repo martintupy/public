@@ -12,10 +12,25 @@ ThisBuild / scalacOptions ++= Seq(
 lazy val root = (project in file("."))
   .settings(
     name := "public",
-    libraryDependencies ++= Seq(
-      scalaTest % Test,
-      cats,
-      scalaCheck,
-      fs2
-    ) ++ monocle ++ circe
+    libraryDependencies ++=
+      Dependencies.scalaTest ++
+      Dependencies.cats ++
+      Dependencies.scalaCheck ++
+      Dependencies.fs2 ++
+      Dependencies.monocle ++
+      Dependencies.circe
   )
+
+lazy val mdocs = project
+  .dependsOn(root)
+  .settings(
+    mdocVariables := Map(
+      "CATS" -> Versions.cats,
+      "FS2" -> Versions.fs2,
+      "CIRCE" -> Versions.circe,
+      "MONOCLE" -> Versions.monocle
+    ),
+    mdocOut := file("docs"),
+    mdocIn := file("mdocs/docs")
+  )
+  .enablePlugins(MdocPlugin)
