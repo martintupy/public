@@ -41,6 +41,8 @@ List("1", "two", "3").traverse(parseInt)
 
 ### Traverse isn't parallel
 
+traverse is not spawning new threads, every value in `Traversable` is processed sequentially 
+
 ```scala mdoc
 import cats.implicits._
 
@@ -94,6 +96,6 @@ val usersGroup: Map[Int, List[String]] = Map(1 -> List("Mike", "Josh", "Maria"),
 
 def getGroupUsers(id: Int): Future[List[String]] = Future(usersGroup.getOrElse(id, List.empty))
 
-userIds.flatTraverse(getGroupUsers)
+List(1, 2, 3).flatTraverse(getGroupUsers)
 
 ```
