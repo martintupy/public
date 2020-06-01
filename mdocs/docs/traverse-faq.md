@@ -89,7 +89,7 @@ override def traverse[G[_], A, B](fa: Seq[A])(f: A => G[B])(implicit G: Applicat
 
 where `Seq.empty` is always `List` (therefore List is most of the cases inferred type)
 
-```scala
+```scala mdoc
 Seq.empty
 ```
 

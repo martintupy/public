@@ -91,6 +91,7 @@ where `Seq.empty` is always `List` (therefore List is most of the cases inferred
 
 ```scala
 Seq.empty
+// res0: Seq[Nothing] = List()
 ```
 
 ## How is Traverse related to Future.traverse and twitter.util.Future.traverseSequentially
