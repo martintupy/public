@@ -16,7 +16,7 @@ traverse requires `F[_]` in `A => F[B]` to be Applicative (be an instance of App
 all standard scala types that are `Applicative` (Future, Option, Either, List ....) will satisfy this requirement after importing `cats.implicits._`
 
 
-### Examples
+## `Traverse.traverse`
 ```scala mdoc
 import cats.implicits._
 import scala.concurrent.Future 
@@ -39,7 +39,7 @@ List("1", "2", "3").traverse(parseInt)
 List("1", "two", "3").traverse(parseInt)
 ```
 
-### Traverse filter
+## `Traverse.traverseFilter`
 
 filtering out values that are not present as result while traversing in `F[_]` context
 
@@ -60,7 +60,7 @@ userIds.traverseFilter(getUser)
 
 ```
 
-### Flat traverse
+## `Traverse.flatTraverse`
 
 flattening values (list of values) from result while traversing in `F[_]` context
 
@@ -78,7 +78,30 @@ List(1, 2, 3).flatTraverse(getGroupUsers)
 
 ```
 
-### All together
+## `Traverse.sequence`
+
+sequence is just like traverse, but done after List is being created (traverse does it one go)
+
+convert existing `List[F[A]]` to `F[List[A]]` 
+
+looking at the implementation, it is just traverse called with identity
+```scala
+def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] =
+  traverse(fga)(ga => ga)
+``` 
+
+```scala mdoc 
+import cats.implicits._
+
+List(Option(1), Option(2), Option(3)).sequence
+
+List(Option(1), Option.empty[Int], Option(3)).sequence
+```
+
+always prefer `traverse` over `sequence`
+
+
+## All together
 
 Without `F[_]` context
 ```scala mdoc

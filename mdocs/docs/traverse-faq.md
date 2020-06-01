@@ -208,3 +208,7 @@ println(s"${end - start} ms")
 ```
 - meaning our Applicative implementation for twitter Future behaves same as twitter.util.Future.traverseSequentially (sequentially blocking)
 
+
+### `traverse` vs `sequence`
+
+ 

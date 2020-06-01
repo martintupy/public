@@ -16,7 +16,7 @@ traverse requires `F[_]` in `A => F[B]` to be Applicative (be an instance of App
 all standard scala types that are `Applicative` (Future, Option, Either, List ....) will satisfy this requirement after importing `cats.implicits._`
 
 
-### Examples
+## `Traverse.traverse`
 ```scala
 import cats.implicits._
 import scala.concurrent.Future  
@@ -43,7 +43,7 @@ List("1", "two", "3").traverse(parseInt)
 // res2: Option[List[Int]] = None
 ```
 
-### Traverse filter
+## `Traverse.traverseFilter`
 
 filtering out values that are not present as result while traversing in `F[_]` context
 
@@ -65,7 +65,7 @@ userIds.traverseFilter(getUser)
 // res3: Future[List[String]] = Future(Success(List(Mike, Martin, John)))
 ```
 
-### Flat traverse
+## `Traverse.flatTraverse`
 
 flattening values (list of values) from result while traversing in `F[_]` context
 
@@ -88,7 +88,32 @@ List(1, 2, 3).flatTraverse(getGroupUsers)
 // res4: Future[List[String]] = Future(Success(List(Mike, Josh, Maria, Martin)))
 ```
 
-### All together
+## `Traverse.sequence`
+
+sequence is just like traverse, but done after List is being created (traverse does it one go)
+
+convert existing `List[F[A]]` to `F[List[A]]` 
+
+looking at the implementation, it is just traverse called with identity
+```scala
+def sequence[G[_]: Applicative, A](fga: F[G[A]]): G[F[A]] =
+  traverse(fga)(ga => ga)
+``` 
+
+```scala
+import cats.implicits._
+
+List(Option(1), Option(2), Option(3)).sequence
+// res5: Option[List[Int]] = Some(List(1, 2, 3))
+
+List(Option(1), Option.empty[Int], Option(3)).sequence
+// res6: Option[List[Int]] = None
+```
+
+always prefer `traverse` over `sequence`
+
+
+## All together
 
 Without `F[_]` context
 ```scala
@@ -124,7 +149,7 @@ for {
   id <- getUserIds(role)
   user <- getUserName(id).toList
 } yield user
-// res5: List[String] = List(
+// res7: List[String] = List(
 //   "Martin",
 //   "Peter",
 //   "Maria",
@@ -141,7 +166,7 @@ for {
   id <- getUserIds(role)
   user <- getUserName(id).toList
 } yield user
-// res6: List[String] = List(
+// res8: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
@@ -169,7 +194,7 @@ val usersStd = for {
 } yield user
 // usersStd: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
 Await.result(usersStd, 1.minute)
-// res7: List[String] = List(
+// res9: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
@@ -191,7 +216,7 @@ val usersCats = for {
 // usersCats: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
 
 Await.result(usersCats, 1.minute)
-// res8: List[String] = List(
+// res10: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
