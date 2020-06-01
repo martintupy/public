@@ -1,4 +1,5 @@
 # Traverse
+- [back to Index](index.md)
 
 convert `List[A]` to `F[List[B]]` using `A => F[B]`
 
