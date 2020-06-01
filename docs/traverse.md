@@ -43,39 +43,6 @@ List("1", "two", "3").traverse(parseInt)
 // res2: Option[List[Int]] = None
 ```
 
-### Traverse isn't parallel
-
-traverse is not spawning new threads, every value in `Traverse` is processed sequentially 
-
-```scala
-import cats.implicits._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-
-def effect(n: Int): Future[Unit] = {
-  Thread.sleep(1000 / n) // bigger the number, shorter it takes
-  Future(println(n))
-}
-
-def program = (1 to 10).toList.traverse(effect)
-
-
-Await.result(program, 1.minute)
-// 1
-// 2
-// 3
-// 4
-// 5
-// 6
-// 7
-// 8
-// 9
-// 10
-// res3: List[Unit] = List((), (), (), (), (), (), (), (), (), ())
-```
-
 ### Traverse filter
 
 filtering out values that are not present as result while traversing in `F[_]` context
@@ -95,7 +62,7 @@ val userIds = (1 to 10).toList
 // userIds: List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
 
 userIds.traverseFilter(getUser)
-// res4: Future[List[String]] = Future(Success(List(Mike, Martin, John)))
+// res3: Future[List[String]] = Future(Success(List(Mike, Martin, John)))
 ```
 
 ### Flat traverse
@@ -118,7 +85,7 @@ val usersGroup: Map[Int, List[String]] = Map(1 -> List("Mike", "Josh", "Maria"),
 def getGroupUsers(id: Int): Future[List[String]] = Future(usersGroup.getOrElse(id, List.empty))
 
 List(1, 2, 3).flatTraverse(getGroupUsers)
-// res5: Future[List[String]] = Future(Success(List(Mike, Josh, Maria, Martin)))
+// res4: Future[List[String]] = Future(Success(List(Mike, Josh, Maria, Martin)))
 ```
 
 ### All together
@@ -157,7 +124,7 @@ for {
   id <- getUserIds(role)
   user <- getUserName(id).toList
 } yield user
-// res6: List[String] = List(
+// res5: List[String] = List(
 //   "Martin",
 //   "Peter",
 //   "Maria",
@@ -174,7 +141,7 @@ for {
   id <- getUserIds(role)
   user <- getUserName(id).toList
 } yield user
-// res7: List[String] = List(
+// res6: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
@@ -202,7 +169,7 @@ val usersStd = for {
 } yield user
 // usersStd: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
 Await.result(usersStd, 1.minute)
-// res8: List[String] = List(
+// res7: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
@@ -224,7 +191,7 @@ val usersCats = for {
 // usersCats: Future[List[String]] = Future(Success(List(Martin, Leo, Peter, Maria, Josh, Dusan)))
 
 Await.result(usersCats, 1.minute)
-// res9: List[String] = List(
+// res8: List[String] = List(
 //   "Martin",
 //   "Leo",
 //   "Peter",
@@ -233,3 +200,7 @@ Await.result(usersCats, 1.minute)
 //   "Dusan"
 // )
 ```
+
+### FAQs
+
+[traverse-faq](./traverse-faq.md)

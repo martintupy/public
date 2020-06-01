@@ -39,28 +39,6 @@ List("1", "2", "3").traverse(parseInt)
 List("1", "two", "3").traverse(parseInt)
 ```
 
-### Traverse isn't parallel
-
-traverse is not spawning new threads, every value in `Traverse` is processed sequentially 
-
-```scala mdoc
-import cats.implicits._
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration._
-import scala.concurrent.{Await, Future}
-
-def effect(n: Int): Future[Unit] = {
-  Thread.sleep(1000 / n) // bigger the number, shorter it takes
-  Future(println(n))
-}
-
-def program = (1 to 10).toList.traverse(effect)
-
-
-Await.result(program, 1.minute)
-```
-
 ### Traverse filter
 
 filtering out values that are not present as result while traversing in `F[_]` context
@@ -156,3 +134,7 @@ val usersCats = for {
 
 Await.result(usersCats, 1.minute)
 ```
+
+### FAQs
+
+[traverse-faq](./traverse-faq.md)
