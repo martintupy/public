@@ -1,6 +1,6 @@
 import Dependencies._
 
-ThisBuild / scalaVersion := "2.13.1"
+ThisBuild / scalaVersion := "2.13.2"
 ThisBuild / version := "0.1.0-SNAPSHOT"
 ThisBuild / scalacOptions ++= Seq(
   "-feature",
@@ -18,7 +18,8 @@ lazy val root = (project in file("."))
       Dependencies.scalaCheck ++
       Dependencies.fs2 ++
       Dependencies.monocle ++
-      Dependencies.circe
+      Dependencies.circe ++
+      Dependencies.twitterUtil
   )
 
 lazy val mdocs = project

@@ -1,6 +1,5 @@
 package slides.binary_ops.semigroup
 
-
 object SemigroupMotivation {
 
   def sumInt(x: Int, y: Int): Int = x + y

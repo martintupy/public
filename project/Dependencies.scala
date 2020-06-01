@@ -26,4 +26,6 @@ object Dependencies {
     "io.circe" %% "circe-shapes",
     "io.circe" %% "circe-generic-extras"
   ).map(_ % Versions.circe)
+
+  lazy val twitterUtil = Seq("com.twitter" %% "util-core" % "20.5.0")
 }

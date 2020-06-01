@@ -1,28 +1,42 @@
 #Traverse FAQ
 
-### Isn't Traverse parallel ? 
+## Isn't Traverse parallel ? 
 
-traverse is not spawning new threads, every value in `Traverse` is processed sequentially 
+traverse itself is not spawning new threads, every value in `Traverse` is processed sequentially   
 
-```scala mdoc
+```scala
 import cats.implicits._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 import scala.concurrent.{Await, Future}
 
-def effect(n: Int): Future[Unit] = {
+def printInFuture(n: Int): Future[Unit] = {
   Thread.sleep(1000 / n) // bigger the number, shorter it takes
   Future(println(n))
 }
 
-def program = (1 to 10).toList.traverse(effect)
-
+def program = (1 to 10).toList.traverse(printInFuture)
 
 Await.result(program, 1.minute)
+// 1
+// 2
+// 3
+// 4
+// 5
+// 6
+// 7
+// 8
+// 9
+// 10
 ```
 
-### Why cats uses only List and Vector instead of Seq ?
+*** Parallelism is up to implementation of `Applicative` e.g. 
+ - scala.concurrent.Future is running each Future in parallel but
+ - twitter.util.Future is running each Future one after the other (blocking)
+ see below
+
+## Why cats uses only List and Vector instead of Seq ?
 
 A Seq is an Iterable that has a defined order of elements. Seq has many subclasses:
 ![Seq](./img/seq.png)
@@ -74,6 +88,123 @@ override def traverse[G[_], A, B](fa: Seq[A])(f: A => G[B])(implicit G: Applicat
 
 where `Seq.empty` is always `List` (therefore List is most of the cases inferred type)
 
-```scala mdoc
+```scala
 Seq.empty
 ```
+
+## How is Traverse related to Future.traverse and twitter.util.Future.traverseSequentially
+
+in example, I used 10 elements traversed over some effect (take exactly 1 second to return the value) 
+
+#### `Future.traverse`
+```scala
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.Duration
+import scala.concurrent.ExecutionContext.Implicits.global
+
+def effect[A](a: A): Future[A] = {
+  Future {
+    Thread.sleep(1000)
+    a
+  }
+}
+val start: Long = System.currentTimeMillis()
+val result = Future.traverse((1 to 10).toList)(effect)
+Await.result(result, Duration(1, TimeUnit.MINUTES))
+val end: Long = System.currentTimeMillis()
+
+println(s"${end - start} ms")
+// 1136 ms
+```
+for scala Future 
+- `Future.traverse` took ~ 1136 ms, which means as long as traverse get a Future instance it proceeds to the next value
+- results are being evaluated in parallel
+
+---
+#### `twitter.util.Future.traverseSequentially`
+
+```scala
+import com.twitter
+
+def effect[A](a: A): twitter.util.Future[A] = {
+  twitter.util.Future {
+    Thread.sleep(1000)
+    a
+  }
+}
+
+val start: Long = System.currentTimeMillis()
+val result = twitter.util.Future.traverseSequentially((1 to 10).toList)(effect)
+twitter.util.Await.result(result, twitter.util.Duration(1, TimeUnit.MINUTES))
+val end: Long = System.currentTimeMillis()
+
+println(s"${end - start} ms")
+// 10091 ms
+
+}
+```
+
+for twitter Future 
+- `twitter.util.Future.traverseSequentially` took ~ 10091 ms, traverseSequentially is waiting for result to proceed to the next value 
+- each evaluation is blocking
+
+---
+
+#### `Traverse.traverse` for `Future`
+
+Using cats Applicative for scala Future
+
+```scala
+import cats.implicits._
+
+def effect[A](a: A): Future[A] = {
+  Future {
+    Thread.sleep(1000)
+    a
+  }
+}
+
+val start: Long = System.currentTimeMillis()
+val result = (1 to 10).toList.traverse(effect)
+Await.result(result, Duration(1, TimeUnit.MINUTES))
+val end: Long = System.currentTimeMillis()
+
+println(s"${end - start} ms")
+// 1376 ms
+```
+
+`Traverse.traverse` took 1376 ms - meaning cats traverse behave in same way as `Future.traverse` - in parallel
+
+---
+
+#### `Traverse.traverse` for `twitter.util.Future`
+Using an implemented instance of Applicative for `twitter.util.Future`
+
+```scala 
+implicit val twitterFutureApplicative: Applicative[twitter.util.Future] = new Applicative[twitter.util.Future] {
+  def pure[A](x: A): twitter.util.Future[A] = twitter.util.Future.value(x)
+  def ap[A, B](ff: twitter.util.Future[A => B])(fa: twitter.util.Future[A]): twitter.util.Future[B] = ff.join(fa).map { case (ab, a) => ab(a) }
+}
+```
+
+the
+
+```scala
+import cats.implicits._
+
+def effect[A](a: A): twitter.util.Future[A] = {
+  twitter.util.Future {
+    Thread.sleep(1000)
+    a
+  }
+}
+
+val start: Long = System.currentTimeMillis()
+val result = (1 to 10).toList.traverse(effect)
+twitter.util.Await.result(result, twitter.util.Duration(1, TimeUnit.MINUTES))
+val end: Long = System.currentTimeMillis()
+println(s"${end - start} ms")
+// 10437 ms
+```
+- meaning our Applicative implementation for twitter Future behaves same as twitter.util.Future.traverseSequentially (sequentially blocking)
+
