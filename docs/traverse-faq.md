@@ -1,4 +1,4 @@
-#Traverse FAQ
+# Traverse FAQ
 
 ## Isn't Traverse parallel ? 
 
@@ -34,7 +34,7 @@ Await.result(program, 1.minute)
 *** Parallelism is up to implementation of `Applicative` e.g. 
  - scala.concurrent.Future is running each Future in parallel but
  - twitter.util.Future is running each Future one after the other (blocking)
- see below
+ see [below](#how-is-traverse-related-to-futuretraverse-and-twitterutilfuturetraversesequentially)
 
 ## Why cats uses only List and Vector instead of Seq ?
 
