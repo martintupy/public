@@ -1,10 +1,6 @@
-
-- [traverse](traverse.md)
-
-- [circe](circe.md)
-
-
 ### Used libraries
+
+- [back to Index](index.md)
 
 ---
 cats

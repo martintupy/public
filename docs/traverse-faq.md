@@ -1,4 +1,5 @@
 # Traverse FAQ
+- [back to Index](index.md)
 
 ## Isn't Traverse parallel ? 
 
@@ -93,6 +94,10 @@ Seq.empty
 ```
 
 ## How is Traverse related to Future.traverse and twitter.util.Future.traverseSequentially
+
+It's always up to implementation of traversed Applicative instance 
+
+(the `F[_]` type in `def traverse[F[_]: Applicative, A, B](fa: List[A])(f: A => F[B]): F[List[B]]`)
 
 in example, I used 10 elements traversed over some effect (take exactly 1 second to return the value) 
 
@@ -208,7 +213,3 @@ println(s"${end - start} ms")
 ```
 - meaning our Applicative implementation for twitter Future behaves same as twitter.util.Future.traverseSequentially (sequentially blocking)
 
-
-### `traverse` vs `sequence`
-
- 
