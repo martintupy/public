@@ -21,7 +21,7 @@
 - same as Future[A] but also contains possible error `E` in Left side of `EitherT`
 
 - handling errors `E` is done by destructring EitherT (similarly to Either), 
- this will be forced by the compiler, because EitherT cannot be safely converted to Future
+ this will be forced by the compiler, because EitherT cannot be safely converted to result value `A`
  
 
 
