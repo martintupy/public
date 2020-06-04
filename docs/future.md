@@ -11,12 +11,12 @@
 - contains built in failure represented as an Exception, 
   failures can be handled with methods `recover`, `recoverWith`, `transform` ...
   
-- handling error is not force by the compiler, it always assumes that result will be returned correctly (otherwise error will be thrown)
+- handling error is not forced by the compiler, it always assumes that result will be returned correctly (otherwise error will be thrown)
           
 
 ## EitherT[Future, E, A]
 
-- Either[E, Future[A]] - https://typelevel.org/cats/datatypes/eithert.html
+- Future[Either[E, A]] - https://typelevel.org/cats/datatypes/eithert.html
 
 - same as Future[A] but also contains possible error `E` in Left side of `EitherT`
 
