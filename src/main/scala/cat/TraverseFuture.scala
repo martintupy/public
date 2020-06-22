@@ -2,6 +2,7 @@ package cat
 import java.util.concurrent.TimeUnit
 
 import cats.Applicative
+import cats.effect.IO
 import com.twitter
 
 import scala.concurrent.{Await, Future}
@@ -9,7 +10,6 @@ import scala.concurrent.duration.Duration
 import scala.concurrent.ExecutionContext.Implicits.global
 
 object TraverseFuture extends App {
-
 
   {
     def effect[A](a: A): Future[A] = {
